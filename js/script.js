@@ -1,14 +1,5 @@
 var width, height, largeHeader, canvas, ctx, circles, target, animateHeader = true;
 
-// Init example svg image
-var img = new Image();
-img.onload = function() {
-ctx.drawImage(img, 0, 0);
-}
-img.src = "./img/flower.svg";
-
-
-
 // Main
 initHeader();
 
@@ -91,7 +82,7 @@ function Circle(background) {
     spacey = Math.abs((this.y - (this.speedy < 0 ? -1 : 1) * (canvas.height / 2 + this.radius)) / this.speedy);
   this.ttl = Math.min(spacex, spacey);
   this.img = new Image();
-  this.img.src = "./img/circle.svg"
+  this.img.src = "./img/user.svg"
 };
 
 Circle.prototype.init = function() {
