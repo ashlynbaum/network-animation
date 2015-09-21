@@ -1,3 +1,13 @@
 #large-header{
-  background-color: #ccc;
+}
+
+#canvas {
+  position: absolute;
+  top:0;
+  z-index: -1;
+  background: darkgrey;
+}
+
+html {
+  top:0;
 }

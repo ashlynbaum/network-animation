@@ -85,7 +85,8 @@ function Circle(background) {
   var spacex = Math.abs((this.x - (this.speedx < 0 ? -1 : 1) * (canvas.width / 2 + this.radius)) / this.speedx),
     spacey = Math.abs((this.y - (this.speedy < 0 ? -1 : 1) * (canvas.height / 2 + this.radius)) / this.speedy);
   this.ttl = Math.min(spacex, spacey);
-  this.src = "./img/flower.svg";
+  this.img = new Image();
+  this.img.src = "./img/circle.svg"
 };
 
 Circle.prototype.init = function() {
@@ -133,7 +134,7 @@ function drawCircle(ctx, circle) {
   circle.y += circle.speedy;
   if (circle.opacity < (circle.background ? maxOpacity : 1)) circle.opacity += 0.01;
   circle.ttl--;
-  ctx.drawImage(circle.src, circle.x, circle.y);
+  ctx.drawImage(circle.img, circle.x-circle.radius, circle.y-circle.radius,circle.radius*2,circle.radius*2);
 }
 
 //initializing function
@@ -172,29 +173,29 @@ function draw() {
       //if (Math.abs(circle.y) > yEscape || Math.abs(circle.x) > xEscape) arr[i].init(arr[i].background);
       drawCircle(ctx, circle);
     }
-//     for (var i = 0; i < arr.length - 1; i++) {
-//       for (var j = i + 1; j < arr.length; j++) {
-//         var deltax = arr[i].x - arr[j].x;
-//         var deltay = arr[i].y - arr[j].y;
-//         var dist = Math.pow(Math.pow(deltax, 2) + Math.pow(deltay, 2), 0.5);
-//         //if the circles are overlapping, no laser connecting them
-//         if (dist <= arr[i].radius + arr[j].radius) continue;
-//         //otherwise we connect them only if the dist is < linkDist
-//         if (dist < linkDist) {
-//           var xi = (arr[i].x < arr[j].x ? 1 : -1) * Math.abs(arr[i].radius * deltax / dist);
-//           var yi = (arr[i].y < arr[j].y ? 1 : -1) * Math.abs(arr[i].radius * deltay / dist);
-//           var xj = (arr[i].x < arr[j].x ? -1 : 1) * Math.abs(arr[j].radius * deltax / dist);
-//           var yj = (arr[i].y < arr[j].y ? -1 : 1) * Math.abs(arr[j].radius * deltay / dist);
-//           ctx.beginPath();
-//           ctx.moveTo(arr[i].x + xi, arr[i].y + yi);
-//           ctx.lineTo(arr[j].x + xj, arr[j].y + yj);
-//           var samecolor = arr[i].color == arr[j].color;
-//           ctx.strokeStyle = ["rgba(", arr[i].borderColor, ",", Math.min(arr[i].opacity, arr[j].opacity) * ((linkDist - dist) / linkDist), ")"].join("");
-//           ctx.lineWidth = (arr[i].background ? lineBorder * backgroundMlt : lineBorder) * ((linkDist - dist) / linkDist); //*((linkDist-dist)/linkDist);
-//           ctx.stroke();
-//         }
-//       }
-//     }
+    for (var i = 0; i < arr.length - 1; i++) {
+      for (var j = i + 1; j < arr.length; j++) {
+        var deltax = arr[i].x - arr[j].x;
+        var deltay = arr[i].y - arr[j].y;
+        var dist = Math.pow(Math.pow(deltax, 2) + Math.pow(deltay, 2), 0.5);
+        //if the circles are overlapping, no laser connecting them
+        if (dist <= arr[i].radius + arr[j].radius) continue;
+        //otherwise we connect them only if the dist is < linkDist
+        if (dist < linkDist) {
+          var xi = (arr[i].x < arr[j].x ? 1 : -1) * Math.abs(arr[i].radius * deltax / dist);
+          var yi = (arr[i].y < arr[j].y ? 1 : -1) * Math.abs(arr[i].radius * deltay / dist);
+          var xj = (arr[i].x < arr[j].x ? -1 : 1) * Math.abs(arr[j].radius * deltax / dist);
+          var yj = (arr[i].y < arr[j].y ? -1 : 1) * Math.abs(arr[j].radius * deltay / dist);
+          ctx.beginPath();
+          ctx.moveTo(arr[i].x + xi, arr[i].y + yi);
+          ctx.lineTo(arr[j].x + xj, arr[j].y + yj);
+          var samecolor = arr[i].color == arr[j].color;
+          ctx.strokeStyle = ["rgba(", arr[i].borderColor, ",", Math.min(arr[i].opacity, arr[j].opacity) * ((linkDist - dist) / linkDist), ")"].join("");
+          ctx.lineWidth = (arr[i].background ? lineBorder * backgroundMlt : lineBorder) * ((linkDist - dist) / linkDist); //*((linkDist-dist)/linkDist);
+          ctx.stroke();
+        }
+      }
+    }
   }
 
   var startTime = Date.now();
