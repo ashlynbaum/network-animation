@@ -1,11 +1,17 @@
 #large-header{
+  /*background: darkgrey;*/
 }
 
-#canvas {
+#canvas{
   position: absolute;
   top:0;
   z-index: -1;
-  background: darkgrey;
+}
+
+#canvasbg{
+  position: absolute;
+  top: 0;
+  z-index: -1;
 }
 
 html {
