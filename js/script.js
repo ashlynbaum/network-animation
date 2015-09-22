@@ -37,14 +37,14 @@ var speedMin = 0.05,
 var maxOpacity = 0.5;
 
 //default palette choice
-// var colors = ['52,168,83', '117,95,147', '199,108,23', '194,62,55', '0,172,212', '120,120,120'],
-//   bgColors = ['52,168,83', '117,95,147', '199,108,23', '194,62,55', '0,172,212', '120,120,120'];
-//   // circleBorder = 10,
+// var colors = ['52,168,83', '117,95,147', '199,108,23', '194,62,55', '0,172,212', '120,120,120'];
+  // var bgColors = ['52,168,83', '117,95,147', '199,108,23', '194,62,55', '0,172,212', '120,120,120'];
+  // var circleBorder = 10,
   // backgroundLine = bgColors[0];
 var backgroundMlt = 0.85;
 
 //min distance for links
-var linkDist = Math.min(canvas.width, canvas.height) / 3,
+var linkDist = Math.min(canvas.width, canvas.height) / 2,
   lineBorder = 2.5;
 
 //most importantly: number of overall circles and arrays containing them
@@ -60,8 +60,7 @@ for (var i = 0; i < maxCircles; i++) pointsBack.push(new Circle(true));
 var circleExp = 1,
   circleExpMax = 1.003,
   circleExpMin = 0.997,
-  circleExpSp = 0.00004,
-  circlePulse = false;
+  circleExpSp = 0.00004;
 
 //circle class
 function Circle(background) {
@@ -73,7 +72,7 @@ function Circle(background) {
   // this.filled = this.radius < radThreshold ? (randint(0, 100) > filledCircle ? false : 'full') : (randint(0, 100) > concentricCircle ? false : 'concentric');
   // this.color = background ? bgColors[randint(0, bgColors.length - 1)] : colors[randint(0, colors.length - 1)];
   // this.borderColor = background ? bgColors[randint(0, bgColors.length - 1)] : colors[randint(0, colors.length - 1)];
-  this.opacity = 0.01;
+  // this.opacity = 0.8;
   this.speed = (background ? randRange(speedMin, speedMax) / backgroundMlt : randRange(speedMin, speedMax)); // * (radMin / this.radius);
   this.speedAngle = Math.random() * 2 * Math.PI;
   this.speedx = Math.cos(this.speedAngle) * this.speed;
@@ -82,7 +81,8 @@ function Circle(background) {
     spacey = Math.abs((this.y - (this.speedy < 0 ? -1 : 1) * (canvas.height / 2 + this.radius)) / this.speedy);
   this.ttl = Math.min(spacex, spacey);
   this.img = new Image();
-  this.img.src = "./img/user.svg"
+  // randomly pick user2 or user 3
+  this.img.src = ((randint(0,10) > 5) ? "./img/user2-compressor.svg" : "./img/user3-compressor.svg");
 };
 
 Circle.prototype.init = function() {
@@ -120,10 +120,6 @@ function init() {
 
 // //rendering function
 function draw() {
-  // if (circlePulse) {
-  //   if (circleExp < circleExpMin || circleExp > circleExpMax) circleExpSp *= -1;
-  //   circleExp += circleExpSp;
-  // }
   var ctxfr = document.getElementById('canvas').getContext('2d');
   var ctxbg = document.getElementById('canvasbg').getContext('2d');
 
@@ -166,8 +162,10 @@ function draw() {
           ctx.moveTo(arr[i].x + xi, arr[i].y + yi);
           ctx.lineTo(arr[j].x + xj, arr[j].y + yj);
           var samecolor = arr[i].color == arr[j].color;
-          ctx.strokeStyle = ["rgba(", arr[i].borderColor, ",", Math.min(arr[i].opacity, arr[j].opacity) * ((linkDist - dist) / linkDist)/10, ")"].join("");
-          ctx.lineWidth = (arr[i].background ? lineBorder * backgroundMlt : lineBorder) * ((linkDist - dist) / linkDist); //*((linkDist-dist)/linkDist);
+          // ctx.strokeStyle = ["rgba(", arr[i].borderColor, ",", Math.min(.03, .8) * ((linkDist - dist) / linkDist)*10, ")"].join("");
+          // debugger
+          ctx.strokeStyle = (arr[i].background ? "#00567D" :"rgba(4, 128, 184, 0.72)");
+          ctx.lineWidth = (arr[i].background ? lineBorder * backgroundMlt : lineBorder) * ((linkDist - dist) / linkDist);;
           ctx.stroke();
         }
       }
