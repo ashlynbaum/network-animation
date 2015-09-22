@@ -20,5 +20,8 @@
 }
 html {
   top:0;
-  background-color: darkgrey;
+  background: -webkit-linear-gradient(#027fb7, #B2D0DE); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(#027fb7, #B2D0DE); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(#027fb7, #B2D0DE); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(#027fb7, #B2D0DE); /* Standard syntax (must be last) */
 }
