@@ -10,7 +10,7 @@ function initHeader() {
     target = {x: 0, y: height};
 
     largeHeader = document.getElementById('large-header');
-    largeHeader.style.height = height+'px';
+    largeHeader.style.height = height +'px';
 
     canvas = document.getElementById('canvas');
     canvas.width = width;
@@ -25,36 +25,13 @@ function initHeader() {
 
 // Event handling
 function addListeners() {
-    if(!('ontouchstart' in window)) {
-        window.addEventListener('mousemove', mouseMove);
-    }
-    window.addEventListener('scroll', scrollCheck);
     window.addEventListener('resize', resize);
 }
 
-function mouseMove(e) {
-    var posx = posy = 0;
-    if (e.pageX || e.pageY) {
-        posx = e.pageX;
-        posy = e.pageY;
-    }
-    else if (e.clientX || e.clientY)    {
-        posx = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
-        posy = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
-    }
-    target.x = posx;
-    target.y = posy;
-}
-
-function scrollCheck() {
-    if(document.body.scrollTop > height) animateHeader = false;
-    else animateHeader = true;
-}
-
 function resize() {
-    width = window.innerWidth;
+    width = window.innerWidth - 25;
     height = window.innerHeight;
-    largeHeader.style.height = height+'px';
+    largeHeader.style.height = height +'px';
     canvas.width = width;
     canvas.height = height;
 }
@@ -74,11 +51,8 @@ var speedMin = 0.05,
 var maxOpacity = 0.5;
 
 //default palette choice
-// var colors = ['52,168,83', '117,95,147', '199,108,23', '194,62,55', '0,172,212', '120,120,120'];
-  // var bgColors = ['52,168,83', '117,95,147', '199,108,23', '194,62,55', '0,172,212', '120,120,120'];
-  // var circleBorder = 10,
-  // backgroundLine = bgColors[0];
 var backgroundMlt = 0.85;
+var sourceImg = ["./img/user4-compressor.svg","./img/user5-compressor.svg","./img/user6-compressor.svg", "./img/user7-compressor.svg"];
 
 //min distance for links
 var linkDist = Math.min(canvas.width, canvas.height) / 2,
@@ -106,10 +80,6 @@ function Circle(background) {
   this.x = randRange(-canvas.width / 2, canvas.width / 2);
   this.y = randRange(-canvas.height / 2, canvas.height / 2);
   this.radius = background ? hyperRange(radMin, radMax) * backgroundMlt : hyperRange(radMin, radMax);
-  // this.filled = this.radius < radThreshold ? (randint(0, 100) > filledCircle ? false : 'full') : (randint(0, 100) > concentricCircle ? false : 'concentric');
-  // this.color = background ? bgColors[randint(0, bgColors.length - 1)] : colors[randint(0, colors.length - 1)];
-  // this.borderColor = background ? bgColors[randint(0, bgColors.length - 1)] : colors[randint(0, colors.length - 1)];
-  // this.opacity = 0.8;
   this.speed = (background ? randRange(speedMin, speedMax) / backgroundMlt : randRange(speedMin, speedMax)); // * (radMin / this.radius);
   this.speedAngle = Math.random() * 2 * Math.PI;
   this.speedx = Math.cos(this.speedAngle) * this.speed;
@@ -118,18 +88,9 @@ function Circle(background) {
     spacey = Math.abs((this.y - (this.speedy < 0 ? -1 : 1) * (canvas.height / 2 + this.radius)) / this.speedy);
   this.ttl = Math.min(spacex, spacey);
   this.img = new Image();
-  // randomly pick user2 or user 3
-  this.img.src = ((randint(0,10) > 5) ? "./img/user2-compressor.svg" : "./img/user3-compressor.svg");
-// psuedo code for selecting random source image
-  // var arr = [1, 2, 3, 4, 5];
-  // //array length = 5;
-
-  // var rand = Math.random();
-  // //rand = 0.78;
-  // rand *= arr.length; //(5)
-  // //rand = 3.9
-  // rand = Math.floor(rand);
-  // //rand = 3
+  // randomly pick images from sourceImg
+  var rand = Math.floor( ( Math.random() * sourceImg.length ) );
+  this.img.src = (sourceImg[rand])
 };
 
 Circle.prototype.init = function() {
@@ -211,7 +172,7 @@ function draw() {
           var samecolor = arr[i].color == arr[j].color;
           // ctx.strokeStyle = ["rgba(", arr[i].borderColor, ",", Math.min(.03, .8) * ((linkDist - dist) / linkDist)*10, ")"].join("");
           // debugger
-          ctx.strokeStyle = (arr[i].background ? "#00567D" :"rgba(4, 128, 184, 0.72)");
+          ctx.strokeStyle = (arr[i].background ? "rgba(4, 128, 184, 0.85)" :"rgba(4, 128, 184, 0.72)");
           ctx.lineWidth = (arr[i].background ? lineBorder * backgroundMlt : lineBorder) * ((linkDist - dist) / linkDist);;
           ctx.stroke();
         }
