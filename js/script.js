@@ -31,7 +31,7 @@ var radMin = 30,
 
 //min and max speed to move
 var speedMin = 0.05,
-  speedMax = 0.1;
+  speedMax = 0.2;
 
 //max reachable opacity for every circle and blur effect
 var maxOpacity = 0.5;
@@ -48,7 +48,7 @@ var linkDist = Math.min(canvas.width, canvas.height) / 3,
   lineBorder = 2.5;
 
 //most importantly: number of overall circles and arrays containing them
-var maxCircles = 20,
+var maxCircles = 15,
   points = [],
   pointsBack = [];
 
