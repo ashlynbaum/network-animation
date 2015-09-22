@@ -83,6 +83,16 @@ function Circle(background) {
   this.img = new Image();
   // randomly pick user2 or user 3
   this.img.src = ((randint(0,10) > 5) ? "./img/user2-compressor.svg" : "./img/user3-compressor.svg");
+// psuedo code for selecting random source image
+  // var arr = [1, 2, 3, 4, 5];
+  // //array length = 5;
+
+  // var rand = Math.random();
+  // //rand = 0.78;
+  // rand *= arr.length; //(5)
+  // //rand = 3.9
+  // rand = Math.floor(rand);
+  // //rand = 3
 };
 
 Circle.prototype.init = function() {
