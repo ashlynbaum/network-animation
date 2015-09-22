@@ -4,7 +4,7 @@ var width, height, largeHeader, canvas, ctx, circles, target, animateHeader = tr
 initHeader();
 
 function initHeader() {
-    width = window.innerWidth;
+    width = window.innerWidth - 25;
     height = window.innerHeight;
     target = {x: 0, y: height};
 
