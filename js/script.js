@@ -129,6 +129,7 @@ function init() {
 
 // Draw connecting lines
 <<<<<<< HEAD
+<<<<<<< HEAD
 var drawLines = function (first) {
   var distance, xi, yi, xj, yj;
   for (j = 0; j < first.closest.length - 1; j++){
@@ -165,7 +166,27 @@ var drawLines = function (arr, first) {
       ctx.stroke();
     };
   }
->>>>>>> [wip] refactor.
+
+var drawLines = function (first) {
+  var distance, xi, yi, xj, yj;
+  // for (i = 0; i = arr.length; i++) {
+  for (j = 0; first.closest.length - 2; j++){
+    console.log(first.closest.length, j)
+    console.log(getDistance(first, first.closest[j]))
+    distance = getDistance(first, first.closest[j]);
+    xi = (first.x < first.closest[j].x ? 1 : -1) * Math.abs(first.radius * distance.deltaX / distance.dist);
+    yi = (first.y < first.closest[j].y ? 1 : -1) * Math.abs(first.radius * distance.deltaY / distance.dist);
+    xj = (first.x < first.closest[j].x ? -1 : 1) * Math.abs(first.radius * distance.deltaX / distance.dist);
+    yj = (first.y < first.closest[j].y ? -1 : 1) * Math.abs(first.radius * distance.deltaY / distance.dist);
+    ctx.beginPath();
+    ctx.moveTo(first.x + xi, first.y + yi);
+    ctx.lineTo(first.closest[j].x + xj, first.closest[j].y + yj);
+    // var samecolor = first.color == first.closest[j].color;
+    // ctx.strokeStyle = ["rgba(", first.borderColor, ",", Math.min(first.opacity, first.closest[j].opacity) * ((linkDist - dist) / linkDist)/10, ")"].join("");
+    // ctx.lineWidth = (first.background ? lineBorder * backgroundMlt : lineBorder) * ((linkDist - distance.dist) / linkDist); //*((linkDist-dist)/linkDist);
+    ctx.stroke();
+  };
+  // }
 };
 
 var getDistance = function(pointOne, pointTwo) {
@@ -273,7 +294,7 @@ function draw() {
         }
       }
       first.closest = closest;
-      drawLines(arr, first);
+      drawLines(first);
     }
   }
 
