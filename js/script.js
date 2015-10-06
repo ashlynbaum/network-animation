@@ -248,10 +248,11 @@ function draw() {
           }
         }
       }
+      first.closest = closest;
+      drawLines(arr, first);
     }
-    first.closest = closest;
-    debugger
-     drawLines(arr);
+
+    // debugger
   }
 
     // end of 5 closest refactor
