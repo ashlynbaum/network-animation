@@ -155,14 +155,14 @@ function draw() {
     }
 
     // Draw connecting lines
-    var drawLines = function (arr) {
+    var drawLines = function (arr, first) {
       for (i = 0; i = arr.length; i++) {
-        console.log(arr[i])
-        for (j = 0; arr[i].closest.length; j++){
+        for (j = 0; first.closest.length; j++){
           var xi = (arr[i].x < arr[j].x ? 1 : -1) * Math.abs(arr[i].radius * deltax / dist);
           var yi = (arr[i].y < arr[j].y ? 1 : -1) * Math.abs(arr[i].radius * deltay / dist);
           var xj = (arr[i].x < arr[j].x ? -1 : 1) * Math.abs(arr[j].radius * deltax / dist);
           var yj = (arr[i].y < arr[j].y ? -1 : 1) * Math.abs(arr[j].radius * deltay / dist);
+          // debugger
           ctx.beginPath();
           ctx.moveTo(arr[i].x + xi, arr[i].y + yi);
           ctx.lineTo(arr[j].x + xj, arr[j].y + yj);
@@ -210,10 +210,11 @@ function draw() {
           }
         }
       }
+      first.closest = closest;
+      drawLines(arr, first);
     }
-    first.closest = closest;
-    debugger
-     drawLines(arr);
+
+    // debugger
   }
 
     // end of 5 closest refactor
