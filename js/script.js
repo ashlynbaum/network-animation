@@ -153,15 +153,12 @@ function draw() {
       //if (Math.abs(circle.y) > yEscape || Math.abs(circle.x) > xEscape) arr[i].init(arr[i].background);
       drawCircle(ctx, circle);
     }
-    for (var i = 0; i < arr.length - 1; i++) {
-      for (var j = i + 1; j < arr.length; j++) {
-        var deltax = arr[i].x - arr[j].x;
-        var deltay = arr[i].y - arr[j].y;
-        var dist = Math.pow(Math.pow(deltax, 2) + Math.pow(deltay, 2), 0.5);
-        //if the circles are overlapping, no laser connecting them
-        if (dist <= arr[i].radius + arr[j].radius) continue;
-        //otherwise we connect them only if the dist is < linkDist
-        if (dist < linkDist) {
+
+    // Draw connecting lines
+    var drawLines = function (arr) {
+      for (i = 0; i = arr.length; i++) {
+        console.log(arr[i])
+        for (j = 0; arr[i].closest.length; j++){
           var xi = (arr[i].x < arr[j].x ? 1 : -1) * Math.abs(arr[i].radius * deltax / dist);
           var yi = (arr[i].y < arr[j].y ? 1 : -1) * Math.abs(arr[i].radius * deltay / dist);
           var xj = (arr[i].x < arr[j].x ? -1 : 1) * Math.abs(arr[j].radius * deltax / dist);
@@ -178,7 +175,73 @@ function draw() {
         }
       }
     }
+
+    var getDistance = function(pointOne, pointTwo) {
+      var deltax = pointTwo.x - pointOne.x;
+      var deltay = pointTwo.y - pointOne.y;
+      var dist = Math.pow(Math.pow(deltax, 2) + Math.pow(deltay, 2), 0.5);
+    };
+    // find five closest points
+    for (var i =0; i < arr.length - 1; i++) {
+      var closest = []
+      var first = arr[i];
+      for (var j = i + 1; j < arr.length; j ++) {
+        var second = arr[j]
+        if (first !== second) {
+          var placed = false
+          for (var k = 0; k < 5; k++) {
+            if(!placed) {
+              if(closest[k] == undefined) {
+                closest[k] = second;
+                placed = true;
+              }
+            }
+          }
+          for (var k = 0; k < 5; k ++) {
+            if(!placed) {
+              // TODO: create get distance function
+              // TODO: if circles are not overlapping
+              // if (dist <= arr[i].radius + arr[j].radius) continue;
+              if (getDistance(first, second) < getDistance(first, closest[k])){
+                closest[k] = second
+                placed = true
+              }
+            }
+          }
+        }
+      }
+    }
+    first.closest = closest;
+    debugger
+     drawLines(arr);
   }
+
+    // end of 5 closest refactor
+
+    // for (var i = 0; i < arr.length - 1; i++) {
+    //   for (var j = i + 1; j < arr.length; j++) {
+    //     var deltax = arr[i].x - arr[j].x;
+    //     var deltay = arr[i].y - arr[j].y;
+    //     var dist = Math.pow(Math.pow(deltax, 2) + Math.pow(deltay, 2), 0.5);
+    //     //if the circles are overlapping, no laser connecting them
+    //     if (dist <= arr[i].radius + arr[j].radius) continue;
+    //     //otherwise we connect them only if the dist is < linkDist
+    //     if (dist < linkDist) {
+    //       var xi = (arr[i].x < arr[j].x ? 1 : -1) * Math.abs(arr[i].radius * deltax / dist);
+    //       var yi = (arr[i].y < arr[j].y ? 1 : -1) * Math.abs(arr[i].radius * deltay / dist);
+    //       var xj = (arr[i].x < arr[j].x ? -1 : 1) * Math.abs(arr[j].radius * deltax / dist);
+    //       var yj = (arr[i].y < arr[j].y ? -1 : 1) * Math.abs(arr[j].radius * deltay / dist);
+    //       ctx.beginPath();
+    //       ctx.moveTo(arr[i].x + xi, arr[i].y + yi);
+    //       ctx.lineTo(arr[j].x + xj, arr[j].y + yj);
+    //       var samecolor = arr[i].color == arr[j].color;
+    //       ctx.strokeStyle = ["rgba(", arr[i].borderColor, ",", Math.min(arr[i].opacity, arr[j].opacity) * ((linkDist - dist) / linkDist)/10, ")"].join("");
+    //       ctx.lineWidth = (arr[i].background ? lineBorder * backgroundMlt : lineBorder) * ((linkDist - dist) / linkDist); //*((linkDist-dist)/linkDist);
+    //       ctx.stroke();
+    //     }
+    //   }
+    // }
+  // }
 
   var startTime = Date.now();
   renderPoints(ctxfr, points);
