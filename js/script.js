@@ -128,6 +128,7 @@ function init() {
 
 
 // Draw connecting lines
+<<<<<<< HEAD
 var drawLines = function (first) {
   var distance, xi, yi, xj, yj;
   for (j = 0; j < first.closest.length - 1; j++){
@@ -143,6 +144,28 @@ var drawLines = function (first) {
     ctx.lineWidth = (first.background ? lineBorder * backgroundMlt : lineBorder) * ((linkDist - distance.dist) / linkDist);
     ctx.stroke();
   };
+=======
+var drawLines = function (arr, first) {
+  var distance, xi, yi, xj, yj;
+  for (i = 0; i = arr.length; i++) {
+    for (j = 0; first.closest.length - 1; j++){
+      // console.log(first.closest.length)
+      // console.log(getDistance(first, first.closest[j]))
+      distance = getDistance(first, first.closest[j]);
+      xi = (first.x < first.closest[j].x ? 1 : -1) * Math.abs(first.radius * distance.deltaX / distance.dist);
+      yi = (first.y < first.closest[j].y ? 1 : -1) * Math.abs(first.radius * distance.deltaY / distance.dist);
+      xj = (first.x < first.closest[j].x ? -1 : 1) * Math.abs(first.radius * distance.deltaX / distance.dist);
+      yj = (first.y < first.closest[j].y ? -1 : 1) * Math.abs(first.radius * distance.deltaY / distance.dist);
+      ctx.beginPath();
+      ctx.moveTo(first.x + xi, first.y + yi);
+      ctx.lineTo(first.closest[j].x + xj, first.closest[j].y + yj);
+      // var samecolor = first.color == first.closest[j].color;
+      // ctx.strokeStyle = ["rgba(", first.borderColor, ",", Math.min(first.opacity, first.closest[j].opacity) * ((linkDist - dist) / linkDist)/10, ")"].join("");
+      // ctx.lineWidth = (first.background ? lineBorder * backgroundMlt : lineBorder) * ((linkDist - distance.dist) / linkDist); //*((linkDist-dist)/linkDist);
+      ctx.stroke();
+    };
+  }
+>>>>>>> [wip] refactor.
 };
 
 var getDistance = function(pointOne, pointTwo) {
@@ -219,8 +242,9 @@ function draw() {
       var deltay = pointTwo.y - pointOne.y;
       var dist = Math.pow(Math.pow(deltax, 2) + Math.pow(deltay, 2), 0.5);
     };
+
     // find five closest points
-    for (var i =0; i < arr.length - 1; i++) {
+    for (var i =0; i < arr.length; i++) {
       var closest = []
       var first = arr[i];
       for (var j = i + 1; j < arr.length; j ++) {
@@ -251,36 +275,7 @@ function draw() {
       first.closest = closest;
       drawLines(arr, first);
     }
-
-    // debugger
   }
-
-    // end of 5 closest refactor
-
-    // for (var i = 0; i < arr.length - 1; i++) {
-    //   for (var j = i + 1; j < arr.length; j++) {
-    //     var deltax = arr[i].x - arr[j].x;
-    //     var deltay = arr[i].y - arr[j].y;
-    //     var dist = Math.pow(Math.pow(deltax, 2) + Math.pow(deltay, 2), 0.5);
-    //     //if the circles are overlapping, no laser connecting them
-    //     if (dist <= arr[i].radius + arr[j].radius) continue;
-    //     //otherwise we connect them only if the dist is < linkDist
-    //     if (dist < linkDist) {
-    //       var xi = (arr[i].x < arr[j].x ? 1 : -1) * Math.abs(arr[i].radius * deltax / dist);
-    //       var yi = (arr[i].y < arr[j].y ? 1 : -1) * Math.abs(arr[i].radius * deltay / dist);
-    //       var xj = (arr[i].x < arr[j].x ? -1 : 1) * Math.abs(arr[j].radius * deltax / dist);
-    //       var yj = (arr[i].y < arr[j].y ? -1 : 1) * Math.abs(arr[j].radius * deltay / dist);
-    //       ctx.beginPath();
-    //       ctx.moveTo(arr[i].x + xi, arr[i].y + yi);
-    //       ctx.lineTo(arr[j].x + xj, arr[j].y + yj);
-    //       var samecolor = arr[i].color == arr[j].color;
-    //       ctx.strokeStyle = ["rgba(", arr[i].borderColor, ",", Math.min(arr[i].opacity, arr[j].opacity) * ((linkDist - dist) / linkDist)/10, ")"].join("");
-    //       ctx.lineWidth = (arr[i].background ? lineBorder * backgroundMlt : lineBorder) * ((linkDist - dist) / linkDist); //*((linkDist-dist)/linkDist);
-    //       ctx.stroke();
-    //     }
-    //   }
-    // }
-  // }
 
   var startTime = Date.now();
   renderPoints(ctxfr, points);
