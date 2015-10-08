@@ -176,7 +176,6 @@ function draw() {
       var xEscape = canvas.width / 2 + circle.radius,
         yEscape = canvas.height / 2 + circle.radius;
       if (circle.ttl < -20) arr[i].init(arr[i].background);
-      //if (Math.abs(circle.y) > yEscape || Math.abs(circle.x) > xEscape) arr[i].init(arr[i].background);
       drawCircle(ctx, circle);
     }
 
@@ -189,6 +188,7 @@ function draw() {
         if (first !== second) {
           var placed = false
           for (var k = 0; k < 2; k++) {
+            // assign initial circles as closest circles.
             if(!placed) {
               if(closest[k] == undefined) {
                 closest[k] = second;
