@@ -198,12 +198,13 @@ function draw() {
           }
           for (var k = 0; k < 2; k ++) {
             if(!placed) {
-              // TODO: create get distance function
-              // TODO: if circles are not overlapping
-              // if (dist <= arr[i].radius + arr[j].radius) continue;
-              if (getDistance(first, second).dist < getDistance(first, closest[k]).dist){
-                closest[k] = second
-                placed = true
+              // if circles are not overlapping
+              if (getDistance(first, sec ond).dist >= first.radius + second.radius) {
+                // identify closest circles
+                if (getDistance(first, second).dist < getDistance(first, closest[k]).dist){
+                  closest[k] = second
+                  placed = true
+                }
               }
             }
           }
