@@ -55,7 +55,7 @@ var backgroundMlt = 0.85;
 var sourceImg = ["./img/user4-compressor.svg","./img/user5-compressor.svg","./img/user6-compressor.svg", "./img/user7-compressor.svg"];
 
 //min distance for links
-var linkDist = Math.min(canvas.width, canvas.height) / 2,
+var linkDist = 300,
   lineBorder = 2.5;
 
 //most importantly: number of overall circles and arrays containing them
