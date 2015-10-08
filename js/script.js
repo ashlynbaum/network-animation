@@ -131,9 +131,7 @@ function init() {
 var drawLines = function (first) {
   var distance, xi, yi, xj, yj;
   // for (i = 0; i = arr.length; i++) {
-  for (j = 0; first.closest.length - 2; j++){
-    console.log(first.closest.length, j)
-    console.log(getDistance(first, first.closest[j]))
+  for (j = 0; j < first.closest.length - 1; j++){
     distance = getDistance(first, first.closest[j]);
     xi = (first.x < first.closest[j].x ? 1 : -1) * Math.abs(first.radius * distance.deltaX / distance.dist);
     yi = (first.y < first.closest[j].y ? 1 : -1) * Math.abs(first.radius * distance.deltaY / distance.dist);
@@ -193,7 +191,7 @@ function draw() {
         var second = arr[j]
         if (first !== second) {
           var placed = false
-          for (var k = 0; k < 5; k++) {
+          for (var k = 0; k < 2; k++) {
             if(!placed) {
               if(closest[k] == undefined) {
                 closest[k] = second;
@@ -201,7 +199,7 @@ function draw() {
               }
             }
           }
-          for (var k = 0; k < 5; k ++) {
+          for (var k = 0; k < 2; k ++) {
             if(!placed) {
               // TODO: create get distance function
               // TODO: if circles are not overlapping
