@@ -130,7 +130,6 @@ function init() {
 // Draw connecting lines
 var drawLines = function (first) {
   var distance, xi, yi, xj, yj;
-  // for (i = 0; i = arr.length; i++) {
   for (j = 0; j < first.closest.length - 1; j++){
     distance = getDistance(first, first.closest[j]);
     xi = (first.x < first.closest[j].x ? 1 : -1) * Math.abs(first.radius * distance.deltaX / distance.dist);
@@ -140,12 +139,11 @@ var drawLines = function (first) {
     ctx.beginPath();
     ctx.moveTo(first.x + xi, first.y + yi);
     ctx.lineTo(first.closest[j].x + xj, first.closest[j].y + yj);
-    // var samecolor = first.color == first.closest[j].color;
-    // ctx.strokeStyle = ["rgba(", first.borderColor, ",", Math.min(first.opacity, first.closest[j].opacity) * ((linkDist - dist) / linkDist)/10, ")"].join("");
-    // ctx.lineWidth = (first.background ? lineBorder * backgroundMlt : lineBorder) * ((linkDist - distance.dist) / linkDist); //*((linkDist-dist)/linkDist);
+    var samecolor = first.color == first.closest[j].color;
+    ctx.strokeStyle = (first.background ? "rgba(4, 128, 184, 0.85)" : "rgba(4, 128, 184, 0.52)");;
+    ctx.lineWidth = (first.background ? lineBorder * backgroundMlt : lineBorder) * ((linkDist - distance.dist) / linkDist);
     ctx.stroke();
   };
-  // }
 };
 
 var getDistance = function(pointOne, pointTwo) {
