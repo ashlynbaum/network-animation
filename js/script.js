@@ -128,8 +128,6 @@ function init() {
 
 
 // Draw connecting lines
-<<<<<<< HEAD
-<<<<<<< HEAD
 var drawLines = function (first) {
   var distance, xi, yi, xj, yj;
   for (j = 0; j < first.closest.length - 1; j++){
@@ -145,48 +143,6 @@ var drawLines = function (first) {
     ctx.lineWidth = (first.background ? lineBorder * backgroundMlt : lineBorder) * ((linkDist - distance.dist) / linkDist);
     ctx.stroke();
   };
-=======
-var drawLines = function (arr, first) {
-  var distance, xi, yi, xj, yj;
-  for (i = 0; i = arr.length; i++) {
-    for (j = 0; first.closest.length - 1; j++){
-      // console.log(first.closest.length)
-      // console.log(getDistance(first, first.closest[j]))
-      distance = getDistance(first, first.closest[j]);
-      xi = (first.x < first.closest[j].x ? 1 : -1) * Math.abs(first.radius * distance.deltaX / distance.dist);
-      yi = (first.y < first.closest[j].y ? 1 : -1) * Math.abs(first.radius * distance.deltaY / distance.dist);
-      xj = (first.x < first.closest[j].x ? -1 : 1) * Math.abs(first.radius * distance.deltaX / distance.dist);
-      yj = (first.y < first.closest[j].y ? -1 : 1) * Math.abs(first.radius * distance.deltaY / distance.dist);
-      ctx.beginPath();
-      ctx.moveTo(first.x + xi, first.y + yi);
-      ctx.lineTo(first.closest[j].x + xj, first.closest[j].y + yj);
-      // var samecolor = first.color == first.closest[j].color;
-      // ctx.strokeStyle = ["rgba(", first.borderColor, ",", Math.min(first.opacity, first.closest[j].opacity) * ((linkDist - dist) / linkDist)/10, ")"].join("");
-      // ctx.lineWidth = (first.background ? lineBorder * backgroundMlt : lineBorder) * ((linkDist - distance.dist) / linkDist); //*((linkDist-dist)/linkDist);
-      ctx.stroke();
-    };
-  }
-
-var drawLines = function (first) {
-  var distance, xi, yi, xj, yj;
-  // for (i = 0; i = arr.length; i++) {
-  for (j = 0; first.closest.length - 2; j++){
-    console.log(first.closest.length, j)
-    console.log(getDistance(first, first.closest[j]))
-    distance = getDistance(first, first.closest[j]);
-    xi = (first.x < first.closest[j].x ? 1 : -1) * Math.abs(first.radius * distance.deltaX / distance.dist);
-    yi = (first.y < first.closest[j].y ? 1 : -1) * Math.abs(first.radius * distance.deltaY / distance.dist);
-    xj = (first.x < first.closest[j].x ? -1 : 1) * Math.abs(first.radius * distance.deltaX / distance.dist);
-    yj = (first.y < first.closest[j].y ? -1 : 1) * Math.abs(first.radius * distance.deltaY / distance.dist);
-    ctx.beginPath();
-    ctx.moveTo(first.x + xi, first.y + yi);
-    ctx.lineTo(first.closest[j].x + xj, first.closest[j].y + yj);
-    // var samecolor = first.color == first.closest[j].color;
-    // ctx.strokeStyle = ["rgba(", first.borderColor, ",", Math.min(first.opacity, first.closest[j].opacity) * ((linkDist - dist) / linkDist)/10, ")"].join("");
-    // ctx.lineWidth = (first.background ? lineBorder * backgroundMlt : lineBorder) * ((linkDist - distance.dist) / linkDist); //*((linkDist-dist)/linkDist);
-    ctx.stroke();
-  };
-  // }
 };
 
 var getDistance = function(pointOne, pointTwo) {
@@ -249,45 +205,6 @@ function draw() {
                   closest[k] = second
                   placed = true
                 }
-              }
-            }
-          }
-        }
-      }
-      first.closest = closest;
-      drawLines(first);
-    }
-
-    var getDistance = function(pointOne, pointTwo) {
-      var deltax = pointTwo.x - pointOne.x;
-      var deltay = pointTwo.y - pointOne.y;
-      var dist = Math.pow(Math.pow(deltax, 2) + Math.pow(deltay, 2), 0.5);
-    };
-
-    // find five closest points
-    for (var i =0; i < arr.length; i++) {
-      var closest = []
-      var first = arr[i];
-      for (var j = i + 1; j < arr.length; j ++) {
-        var second = arr[j]
-        if (first !== second) {
-          var placed = false
-          for (var k = 0; k < 5; k++) {
-            if(!placed) {
-              if(closest[k] == undefined) {
-                closest[k] = second;
-                placed = true;
-              }
-            }
-          }
-          for (var k = 0; k < 5; k ++) {
-            if(!placed) {
-              // TODO: create get distance function
-              // TODO: if circles are not overlapping
-              // if (dist <= arr[i].radius + arr[j].radius) continue;
-              if (getDistance(first, second).dist < getDistance(first, closest[k]).dist){
-                closest[k] = second
-                placed = true
               }
             }
           }
