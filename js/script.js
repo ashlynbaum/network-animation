@@ -199,7 +199,7 @@ function draw() {
           for (var k = 0; k < 2; k ++) {
             if(!placed) {
               // if circles are not overlapping
-              if (getDistance(first, sec ond).dist >= first.radius + second.radius) {
+              if (getDistance(first, second).dist >= first.radius + second.radius) {
                 // identify closest circles
                 if (getDistance(first, second).dist < getDistance(first, closest[k]).dist){
                   closest[k] = second
