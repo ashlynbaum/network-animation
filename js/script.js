@@ -134,8 +134,8 @@ var drawLines = function (first) {
     distance = getDistance(first, first.closest[j]);
     xi = (first.x < first.closest[j].x ? 1 : -1) * Math.abs(first.radius * distance.deltaX / distance.dist);
     yi = (first.y < first.closest[j].y ? 1 : -1) * Math.abs(first.radius * distance.deltaY / distance.dist);
-    xj = (first.x < first.closest[j].x ? -1 : 1) * Math.abs(first.radius * distance.deltaX / distance.dist);
-    yj = (first.y < first.closest[j].y ? -1 : 1) * Math.abs(first.radius * distance.deltaY / distance.dist);
+    xj = (first.x < first.closest[j].x ? -1 : 1) * Math.abs(first.closest[j].radius * distance.deltaX / distance.dist);
+    yj = (first.y < first.closest[j].y ? -1 : 1) * Math.abs(first.closest[j].radius * distance.deltaY / distance.dist);
     ctx.beginPath();
     ctx.moveTo(first.x + xi, first.y + yi);
     ctx.lineTo(first.closest[j].x + xj, first.closest[j].y + yj);
