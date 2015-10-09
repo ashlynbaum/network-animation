@@ -44,8 +44,8 @@ var radMin = 30,
   radThreshold = 25; //IFF special, over this radius concentric, otherwise filled
 
 //min and max speed to move
-var speedMin = 0.05,
-  speedMax = 0.2;
+var speedMin = 0.08,
+  speedMax = 0.25;
 
 //max reachable opacity for every circle and blur effect
 var maxOpacity = 0.5;
@@ -56,7 +56,7 @@ var sourceImg = ["./img/user4-compressor.svg","./img/user5-compressor.svg","./im
 
 //min distance for links
 var linkDist = 300,
-  lineBorder = 2.5;
+  lineBorder = 2;
 
 //most importantly: number of overall circles and arrays containing them
 var maxCircles = 15,
@@ -139,7 +139,7 @@ var drawLines = function (first) {
     ctx.beginPath();
     ctx.moveTo(first.x + xi, first.y + yi);
     ctx.lineTo(first.closest[j].x + xj, first.closest[j].y + yj);
-    ctx.strokeStyle = (first.background ? "rgba(4, 128, 184, 0.85)" : "rgba(4, 128, 184, 0.52)");;
+    ctx.strokeStyle = (first.background ? "rgba(4, 128, 184, 0.15)" : "rgba(4, 128, 184, 0.50)");;
     ctx.lineWidth = (first.background ? lineBorder * backgroundMlt : lineBorder) * ((linkDist - distance.dist) / linkDist);
     ctx.stroke();
   };
@@ -185,7 +185,7 @@ function draw() {
       var first = arr[i];
       for (var j = i + 1; j < arr.length; j ++) {
         var second = arr[j]
-        if (first !== second) {
+        if (first !== second && getDistance(first, second).dist < 500) {
           var placed = false
           for (var k = 0; k < 2; k++) {
             // assign initial circles as closest circles.
@@ -199,7 +199,7 @@ function draw() {
           for (var k = 0; k < 2; k ++) {
             if(!placed) {
               // if circles are not overlapping
-              if (getDistance(first, second).dist >= first.radius + second.radius) {
+              if (getDistance(first, second).dist >= first.radius + second.radius ) {
                 // identify closest circles
                 if (getDistance(first, second).dist < getDistance(first, closest[k]).dist){
                   closest[k] = second
