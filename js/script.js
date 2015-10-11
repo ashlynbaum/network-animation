@@ -1,10 +1,11 @@
+// define variables
 var width, height, largeHeader, canvas, ctx, circles, target, animateHeader = true;
 
-// Main
-initHeader();
+// Setup Window
+initWindow();
 addListeners();
 
-function initHeader() {
+function initWindow() {
     width = window.innerWidth - 25;
     height = window.innerHeight;
     target = {x: 0, y: height};
@@ -36,15 +37,15 @@ function resize() {
     canvas.height = height;
 }
 
+// define variables
+
 // min and max radius, radius threshold and percentage of filled circles
 var radMin = 30,
   radMax = 60,
-  // filledCircle = 60, //percentage of filled circles
-  // concentricCircle = 30, //percentage of concentric circles
-  radThreshold = 25; //IFF special, over this radius concentric, otherwise filled
+  radThreshold = 25;
 
 //min and max speed to move
-var speedMin = 0.08,
+var speedMin = 0.1,
   speedMax = 0.25;
 
 //max reachable opacity for every circle and blur effect
@@ -52,13 +53,13 @@ var maxOpacity = 0.5;
 
 //default palette choice
 var backgroundMlt = 0.85;
-var sourceImg = ["./img/user4-compressor.svg","./img/user5-compressor.svg","./img/user6-compressor.svg", "./img/user7-compressor.svg"];
+var sourceImg = [ "./img/user4-compressor.svg","./img/user5-compressor.svg","./img/user6-compressor.svg", "./img/user7-compressor.svg"];
 
 //min distance for links
 var linkDist = 300,
   lineBorder = 2;
 
-//most importantly: number of overall circles and arrays containing them
+//number of overall circles and arrays containing them
 var maxCircles = 15,
   points = [],
   pointsBack = [];
@@ -88,7 +89,7 @@ function Circle(background) {
     spacey = Math.abs((this.y - (this.speedy < 0 ? -1 : 1) * (canvas.height / 2 + this.radius)) / this.speedy);
   this.ttl = Math.min(spacex, spacey);
   this.img = new Image();
-  // randomly pick images from sourceImg
+  // randomly pick images from sourceImg array
   var rand = Math.floor( ( Math.random() * sourceImg.length ) );
   this.img.src = (sourceImg[rand])
 };
@@ -121,13 +122,7 @@ function drawCircle(ctx, circle) {
   ctx.drawImage(circle.img, circle.x-circle.radius, circle.y-circle.radius,circle.radius*2,circle.radius*2);
 }
 
-//initializing function
-function init() {
-  window.requestAnimationFrame(draw);
-}
-
-
-// Draw connecting lines
+// Draw connecting lines to icons
 var drawLines = function (first) {
   var distance, xi, yi, xj, yj;
   for (j = 0; j < first.closest.length - 1; j++){
@@ -152,6 +147,11 @@ var getDistance = function(pointOne, pointTwo) {
   return { deltaX: deltax, deltaY: deltay, dist: dist}
 };
 
+//initializing function
+function init() {
+  window.requestAnimationFrame(draw);
+}
+
 // //rendering function
 function draw() {
   var ctxfr = document.getElementById('canvas').getContext('2d');
@@ -167,7 +167,7 @@ function draw() {
   ctxbg.save();
   ctxbg.translate(canvas.width / 2, canvas.height / 2);
 
-  //function to render each single circle, its connections and to manage its out of boundaries replacement
+  // render each circle and draws the connecting lines
   function renderPoints(ctx, arr) {
     for (var i = 0; i < arr.length; i++) {
       var circle = arr[i];
@@ -179,12 +179,13 @@ function draw() {
       drawCircle(ctx, circle);
     }
 
-    // find five closest points
+    // find two closest circles
     for (var i =0; i < arr.length; i++) {
       var closest = []
       var first = arr[i];
       for (var j = i + 1; j < arr.length; j ++) {
         var second = arr[j]
+        // set max distance of connecting lines
         if (first !== second && getDistance(first, second).dist < 500) {
           var placed = false
           for (var k = 0; k < 2; k++) {
