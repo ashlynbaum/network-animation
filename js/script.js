@@ -44,8 +44,8 @@ var radMin = 30,
   radThreshold = 25; //IFF special, over this radius concentric, otherwise filled
 
 //min and max speed to move
-var speedMin = 0.05,
-  speedMax = 0.2;
+var speedMin = 0.08,
+  speedMax = 0.25;
 
 //max reachable opacity for every circle and blur effect
 var maxOpacity = 0.5;
@@ -56,7 +56,7 @@ var sourceImg = ["./img/user4-compressor.svg","./img/user5-compressor.svg","./im
 
 //min distance for links
 var linkDist = 300,
-  lineBorder = 2.5;
+  lineBorder = 2;
 
 //most importantly: number of overall circles and arrays containing them
 var maxCircles = 15,
@@ -126,6 +126,32 @@ function init() {
   window.requestAnimationFrame(draw);
 }
 
+
+// Draw connecting lines
+var drawLines = function (first) {
+  var distance, xi, yi, xj, yj;
+  for (j = 0; j < first.closest.length - 1; j++){
+    distance = getDistance(first, first.closest[j]);
+    xi = (first.x < first.closest[j].x ? 1 : -1) * Math.abs(first.radius * distance.deltaX / distance.dist);
+    yi = (first.y < first.closest[j].y ? 1 : -1) * Math.abs(first.radius * distance.deltaY / distance.dist);
+    xj = (first.x < first.closest[j].x ? -1 : 1) * Math.abs(first.closest[j].radius * distance.deltaX / distance.dist);
+    yj = (first.y < first.closest[j].y ? -1 : 1) * Math.abs(first.closest[j].radius * distance.deltaY / distance.dist);
+    ctx.beginPath();
+    ctx.moveTo(first.x + xi, first.y + yi);
+    ctx.lineTo(first.closest[j].x + xj, first.closest[j].y + yj);
+    ctx.strokeStyle = (first.background ? "rgba(4, 128, 184, 0.15)" : "rgba(4, 128, 184, 0.50)");;
+    ctx.lineWidth = (first.background ? lineBorder * backgroundMlt : lineBorder) * ((linkDist - distance.dist) / linkDist);
+    ctx.stroke();
+  };
+};
+
+var getDistance = function(pointOne, pointTwo) {
+  var deltax = pointTwo.x - pointOne.x;
+  var deltay = pointTwo.y - pointOne.y;
+  var dist = Math.pow(Math.pow(deltax, 2) + Math.pow(deltay, 2), 0.5);
+  return { deltaX: deltax, deltaY: deltay, dist: dist}
+};
+
 // //rendering function
 function draw() {
   var ctxfr = document.getElementById('canvas').getContext('2d');
@@ -150,33 +176,42 @@ function draw() {
       var xEscape = canvas.width / 2 + circle.radius,
         yEscape = canvas.height / 2 + circle.radius;
       if (circle.ttl < -20) arr[i].init(arr[i].background);
-      //if (Math.abs(circle.y) > yEscape || Math.abs(circle.x) > xEscape) arr[i].init(arr[i].background);
       drawCircle(ctx, circle);
     }
-    for (var i = 0; i < arr.length - 1; i++) {
-      for (var j = i + 1; j < arr.length; j++) {
-        var deltax = arr[i].x - arr[j].x;
-        var deltay = arr[i].y - arr[j].y;
-        var dist = Math.pow(Math.pow(deltax, 2) + Math.pow(deltay, 2), 0.5);
-        //if the circles are overlapping, no laser connecting them
-        if (dist <= arr[i].radius + arr[j].radius) continue;
-        //otherwise we connect them only if the dist is < linkDist
-        if (dist < linkDist) {
-          var xi = (arr[i].x < arr[j].x ? 1 : -1) * Math.abs(arr[i].radius * deltax / dist);
-          var yi = (arr[i].y < arr[j].y ? 1 : -1) * Math.abs(arr[i].radius * deltay / dist);
-          var xj = (arr[i].x < arr[j].x ? -1 : 1) * Math.abs(arr[j].radius * deltax / dist);
-          var yj = (arr[i].y < arr[j].y ? -1 : 1) * Math.abs(arr[j].radius * deltay / dist);
-          ctx.beginPath();
-          ctx.moveTo(arr[i].x + xi, arr[i].y + yi);
-          ctx.lineTo(arr[j].x + xj, arr[j].y + yj);
-          var samecolor = arr[i].color == arr[j].color;
-          // ctx.strokeStyle = ["rgba(", arr[i].borderColor, ",", Math.min(.03, .8) * ((linkDist - dist) / linkDist)*10, ")"].join("");
-          // debugger
-          ctx.strokeStyle = (arr[i].background ? "rgba(4, 128, 184, 0.85)" :"rgba(4, 128, 184, 0.72)");
-          ctx.lineWidth = (arr[i].background ? lineBorder * backgroundMlt : lineBorder) * ((linkDist - dist) / linkDist);;
-          ctx.stroke();
+
+    // find five closest points
+    for (var i =0; i < arr.length; i++) {
+      var closest = []
+      var first = arr[i];
+      for (var j = i + 1; j < arr.length; j ++) {
+        var second = arr[j]
+        if (first !== second && getDistance(first, second).dist < 500) {
+          var placed = false
+          for (var k = 0; k < 2; k++) {
+            // assign initial circles as closest circles.
+            if(!placed) {
+              if(closest[k] == undefined) {
+                closest[k] = second;
+                placed = true;
+              }
+            }
+          }
+          for (var k = 0; k < 2; k ++) {
+            if(!placed) {
+              // if circles are not overlapping
+              if (getDistance(first, second).dist >= first.radius + second.radius ) {
+                // identify closest circles
+                if (getDistance(first, second).dist < getDistance(first, closest[k]).dist){
+                  closest[k] = second
+                  placed = true
+                }
+              }
+            }
+          }
         }
       }
+      first.closest = closest;
+      drawLines(first);
     }
   }
 
