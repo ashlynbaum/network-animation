@@ -1,16 +1,11 @@
-// define variables
 var width, height, largeHeader, canvas, ctx, circles, target, animateHeader = true;
 
-// Setup Window
-initWindow();
-addListeners();
-
-function initWindow() {
-    width = window.innerWidth - 25;
+var initWindow =function() {
+    width = window.innerWidth;
     height = window.innerHeight;
     target = {x: 0, y: height};
 
-    largeHeader = document.getElementById('large-header');
+    largeHeader = document.getElementById('sign-in-container');
     largeHeader.style.height = height +'px';
 
     canvas = document.getElementById('canvas');
@@ -25,11 +20,11 @@ function initWindow() {
 }
 
 // Event handling
-function addListeners() {
+var addListeners =function() {
     window.addEventListener('resize', resize);
 }
 
-function resize() {
+var resize = function() {
     width = window.innerWidth - 25;
     height = window.innerHeight;
     largeHeader.style.height = height +'px';
@@ -64,57 +59,28 @@ var maxCircles = 15,
   points = [],
   pointsBack = [];
 
-//populating the screen
-for (var i = 0; i < maxCircles * 2; i++) points.push(new Circle());
-for (var i = 0; i < maxCircles; i++) pointsBack.push(new Circle(true));
-
 //experimental vars
 var circleExp = 1,
   circleExpMax = 1.003,
   circleExpMin = 0.997,
   circleExpSp = 0.00004;
 
-//circle class
-function Circle(background) {
-  //if background, it has different rules
-  this.background = (background || false);
-  this.x = randRange(-canvas.width / 2, canvas.width / 2);
-  this.y = randRange(-canvas.height / 2, canvas.height / 2);
-  this.radius = background ? hyperRange(radMin, radMax) * backgroundMlt : hyperRange(radMin, radMax);
-  this.speed = (background ? randRange(speedMin, speedMax) / backgroundMlt : randRange(speedMin, speedMax)); // * (radMin / this.radius);
-  this.speedAngle = Math.random() * 2 * Math.PI;
-  this.speedx = Math.cos(this.speedAngle) * this.speed;
-  this.speedy = Math.sin(this.speedAngle) * this.speed;
-  var spacex = Math.abs((this.x - (this.speedx < 0 ? -1 : 1) * (canvas.width / 2 + this.radius)) / this.speedx),
-    spacey = Math.abs((this.y - (this.speedy < 0 ? -1 : 1) * (canvas.height / 2 + this.radius)) / this.speedy);
-  this.ttl = Math.min(spacex, spacey);
-  this.img = new Image();
-  // randomly pick images from sourceImg array
-  var rand = Math.floor( ( Math.random() * sourceImg.length ) );
-  this.img.src = (sourceImg[rand])
-};
-
-Circle.prototype.init = function() {
-  Circle.call(this, this.background);
-}
-
 //support functions
 //generate random int a<=x<=b
-function randint(a, b) {
+var randint = function(a, b) {
     return Math.floor(Math.random() * (b - a + 1) + a);
   }
   //generate random float
-function randRange(a, b) {
+var randRange = function(a, b) {
     return Math.random() * (b - a) + a;
   }
   //generate random float more likely to be close to a
-function hyperRange(a, b) {
+var hyperRange = function(a, b) {
   return Math.random() * Math.random() * Math.random() * (b - a) + a;
 }
 
-
-//rendering function
-function drawCircle(ctx, circle) {
+// Rendering icon circles
+var drawCircle = function(ctx, circle) {
   circle.x += circle.speedx;
   circle.y += circle.speedy;
   if (circle.opacity < (circle.background ? maxOpacity : 1)) circle.opacity += 0.01;
@@ -146,6 +112,39 @@ var getDistance = function(pointOne, pointTwo) {
   var dist = Math.pow(Math.pow(deltax, 2) + Math.pow(deltay, 2), 0.5);
   return { deltaX: deltax, deltaY: deltay, dist: dist}
 };
+
+// Setup Window
+initWindow();
+addListeners();
+resize();
+
+//circle class
+function Circle(background) {
+  //if background, it has different rules
+  this.background = (background || false);
+  this.x = randRange(-canvas.width / 2, canvas.width / 2);
+  this.y = randRange(-canvas.height / 2, canvas.height / 2);
+  this.radius = background ? hyperRange(radMin, radMax) * backgroundMlt : hyperRange(radMin, radMax);
+  this.speed = (background ? randRange(speedMin, speedMax) / backgroundMlt : randRange(speedMin, speedMax)); // * (radMin / this.radius);
+  this.speedAngle = Math.random() * 2 * Math.PI;
+  this.speedx = Math.cos(this.speedAngle) * this.speed;
+  this.speedy = Math.sin(this.speedAngle) * this.speed;
+  var spacex = Math.abs((this.x - (this.speedx < 0 ? -1 : 1) * (canvas.width / 2 + this.radius)) / this.speedx),
+    spacey = Math.abs((this.y - (this.speedy < 0 ? -1 : 1) * (canvas.height / 2 + this.radius)) / this.speedy);
+  this.ttl = Math.min(spacex, spacey);
+  this.img = new Image();
+  // randomly pick images from sourceImg array
+  var rand = Math.floor( ( Math.random() * sourceImg.length ) );
+  this.img.src = (sourceImg[rand])
+};
+
+Circle.prototype.init = function() {
+  Circle.call(this, this.background);
+}
+
+//populating the screen
+for (var i = 0; i < maxCircles * 2; i++) points.push(new Circle());
+for (var i = 0; i < maxCircles; i++) pointsBack.push(new Circle(true));
 
 //initializing function
 function init() {
